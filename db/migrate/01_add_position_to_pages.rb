@@ -1,6 +1,10 @@
 class AddPositionToPages < ActiveRecord::Migration
   def self.up
-    add_column :pages, :position, :integer
+    begin
+      add_column :pages, :position, :integer
+    rescue
+      puts "Error on column insertion - assuming column exists, continuing..."
+    end
     Page.reset_column_information
     say_with_time("Putting all pages in a default order...") do
       ActiveRecord::Base.record_timestamps = false
